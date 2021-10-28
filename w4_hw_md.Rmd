@@ -23,9 +23,11 @@ myshp <- st_read(here("World_Countries_(Generalized)","World_Countries__Generali
 ```{r}
 diffcsv <- mycsv%>%
   filter(X2019!="NA",
-         X2010!="NA")%>%
+         X2010!="NA")
+
+diffcsv2 <- diffcsv%>%
   mutate(diff=(X2019-X2010))%>%
-  mutate(cc=countrycode(mycsv$Country, 
+  mutate(cc=countrycode(diffcsv$Country, 
                               origin = 'country.name', 
                               destination = 'iso2c'))
 ```
@@ -45,7 +47,7 @@ plot_ly(diffcsv,
 ```{r}
 joinshp <- myshp%>%
   clean_names()%>%
-  left_join(.,diffcsv,
+  left_join(.,diffcsv2,
             by=c("aff_iso"="cc"))
 ```
 
