@@ -1,0 +1,63 @@
+---
+#title: "w4_hw_md"
+##load packages
+---
+```{r}
+library(countrycode)
+library(tidyverse)
+library(here)
+library(sf)
+library(janitor)
+library(plotly)
+library(tmap)
+library(tmaptools)
+```
+---
+##Input document
+---
+```{r}
+mycsv <- read.csv("Gender Inequality Index (GII).csv")
+myshp <- st_read(here("World_Countries_(Generalized)","World_Countries__Generalized_.shp"))
+```
+---
+##Processing csv data
+---
+```{r}
+diffcsv <- mycsv%>%
+  filter(X2019!="NA",
+         X2010!="NA")%>%
+  mutate(diff=(X2019-X2010))%>%
+  mutate(cc=countrycode(mycsv$Country, 
+                              origin = 'country.name', 
+                              destination = 'iso2c'))
+```
+---
+##Dot plot
+---
+```{r}
+plot_ly(diffcsv, 
+        x = ~diff, 
+        y = ~Country, 
+        type = "scatter", 
+        mode = "markers")
+```
+---
+##Attribute data
+---
+```{r}
+joinshp <- myshp%>%
+  clean_names()%>%
+  left_join(.,diffcsv,
+            by=c("aff_iso"="cc"))
+```
+---
+##Mapping
+---
+```{r}
+tmap_mode("plot")
+qtm(joinshp,
+    fill="diff")
+```
+---
+##Done
+---
