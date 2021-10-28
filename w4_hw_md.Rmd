@@ -1,7 +1,5 @@
----
-#title: "w4_hw_md"
-##load packages
----
+#Week 4 Homework
+
 ```{r}
 library(countrycode)
 library(tidyverse)
@@ -12,16 +10,16 @@ library(plotly)
 library(tmap)
 library(tmaptools)
 ```
----
+
 ##Input document
----
+
 ```{r}
 mycsv <- read.csv("Gender Inequality Index (GII).csv")
 myshp <- st_read(here("World_Countries_(Generalized)","World_Countries__Generalized_.shp"))
 ```
----
+
 ##Processing csv data
----
+
 ```{r}
 diffcsv <- mycsv%>%
   filter(X2019!="NA",
@@ -31,9 +29,9 @@ diffcsv <- mycsv%>%
                               origin = 'country.name', 
                               destination = 'iso2c'))
 ```
----
+
 ##Dot plot
----
+
 ```{r}
 plot_ly(diffcsv, 
         x = ~diff, 
@@ -41,23 +39,22 @@ plot_ly(diffcsv,
         type = "scatter", 
         mode = "markers")
 ```
----
+
 ##Attribute data
----
+
 ```{r}
 joinshp <- myshp%>%
   clean_names()%>%
   left_join(.,diffcsv,
             by=c("aff_iso"="cc"))
 ```
----
+
 ##Mapping
----
+
 ```{r}
 tmap_mode("plot")
 qtm(joinshp,
     fill="diff")
 ```
----
+
 ##Done
----
