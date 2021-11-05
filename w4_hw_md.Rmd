@@ -25,7 +25,7 @@ myshp <- st_read(here::here("World_Countries_(Generalized)","World_Countries__Ge
 ##Processing csv data
 
 ```{r}
-diffcsv <- mycsv%>%
+diffcsv <- my_csv%>%
   clean_names()%>%
   select(country, x2019, x2010)
   
