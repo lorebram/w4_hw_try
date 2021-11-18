@@ -135,6 +135,7 @@ t=tmap_arrange(tm1, tm2, tm3, legend, ncol=2)
 
 t
 ```
+#EDIT BY LORENA
 
 
 
